@@ -66,11 +66,15 @@ class Executor:
             txt = f.read()
             text_processor = TextProcessor(txt)
             sick, hack = text_processor.academic_sickness()
-            self.store.collection.insert({
-                'file': filename,
-                'sickness': sick,
-                'hack': hack
-            })
+            self.store.collection.update(
+                {'file': filename},
+                {
+                    'file': filename,
+                    'sickness': sick,
+                    'hack': hack
+                },
+                upsert=True
+            )
 
     @benchmark
     def run(self):
